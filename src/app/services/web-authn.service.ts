@@ -9,7 +9,8 @@ export class WebAuthnService {
 
   constructor(private serverMockService: ServerMockService) { }
 
-  createCredential(user: User): Promise<CredentialType> {
+  webAuthnSignup(user: User): Promise<CredentialType> {
+    console.log('[webAuthnSignup]');
     const publicKeyCredentialCreationOptions: PublicKeyCredentialCreationOptions = {
       // Challenge shoulda come from the server
       challenge: this.serverMockService.getChallenge(),
@@ -35,14 +36,20 @@ export class WebAuthnService {
     return navigator.credentials.create({
       publicKey: publicKeyCredentialCreationOptions,
     });
+
   }
 
-  getAssertion(user: User): Promise<CredentialType> {
+  webAuthnSignin(user: User): Promise<CredentialType> {
+    const allowCredentials: PublicKeyCredentialDescriptor[] = user.credentials.map(c => {
+      console.log(c.credentialId);
+      return { type: 'public-key', id: Uint8Array.from(Object.values(c.credentialId)) };
+    });
+
+    console.log('allowCredentials', allowCredentials);
+
     const credentialRequestOptions: PublicKeyCredentialRequestOptions = {
       challenge: this.serverMockService.getChallenge(),
-      allowCredentials: user.credentials.map(c => {
-        return { type: 'public-key', id: c.credentialId };
-      }),
+      allowCredentials,
     };
 
     return navigator.credentials.get({

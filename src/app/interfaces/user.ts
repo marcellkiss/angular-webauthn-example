@@ -1,6 +1,6 @@
 export interface Credential {
-  credentialId: BufferSource;
-  publicKey: BufferSource;
+  credentialId: Uint8Array;
+  publicKey: Uint8Array;
 }
 
 export interface User {

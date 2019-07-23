@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { User } from './interfaces/user';
 import { ServerMockService } from './services/server-mock.service';
 import { WebAuthnService } from './services/web-authn.service';
-import * as CBOR from './utils/cbor';
 
 @Component({
   selector: 'app-root',
@@ -45,51 +44,15 @@ export class AppComponent {
 
     // Ask for WebAuthn Auth method
     if (confirm('Would you like to use your fingerprint for later logins?')) {
-      this.createCredential(user);
+      this.webAuthnService.webAuthnSignup(user)
+        .then((credential: PublicKeyCredential) => {
+          console.log('credentials.create RESPONSE', credential);
+          const valid = this.serverMockService.registerCredential(user, credential);
+          this.users = this.serverMockService.getUsers();
+        }).catch((error) => {
+          console.log('credentials.create ERROR', error);
+        });
     }
-  }
-
-  createCredential(user: User) {
-    console.log('[createCredential]');
-    // Creating credentials
-    this.webAuthnService.createCredential(user).then((credential: PublicKeyCredential) => {
-      console.log('credentials.create RESPONSE', credential);
-
-      // decode the clientDataJSON into a utf-8 string
-      const utf8Decoder = new TextDecoder('utf-8');
-      const decodedClientData = utf8Decoder.decode(credential.response.clientDataJSON);
-
-      // TODO: create interface for this response
-      const clientDataObj = JSON.parse(decodedClientData);
-      console.log('!!!clientDataObj!!!', clientDataObj);
-
-      // TODO: create interface for this response
-      const decodedAttestationObj = CBOR.decode((credential.response as any).attestationObject);
-      console.log('!!!decodedAttestationObj!!!', decodedAttestationObj);
-
-      const { authData } = decodedAttestationObj;
-
-      // get the length of the credential ID
-      const dataView = new DataView(new ArrayBuffer(2));
-      const idLenBytes = authData.slice(53, 55);
-      idLenBytes.forEach((value, index) => dataView.setUint8(index, value));
-      const credentialIdLength = view.getUint16();
-
-      // get the credential ID
-      const credentialId = authData.slice(55, credentialIdLength);
-
-      // get the public key object
-      const publicKeyBytes = authData.slice(55 + credentialIdLength);
-
-      // the publicKeyBytes are encoded again as CBOR
-      const publicKeyObject = CBOR.decode(publicKeyBytes.buffer);
-
-      // TODO: validate and store credentials
-      console.log('!!!publicKeyObject!!!', publicKeyObject);
-
-    }).catch((error) => {
-      console.log('credentials.create ERROR', error);
-    });
   }
 
   signin() {
@@ -104,7 +67,7 @@ export class AppComponent {
 
   webAuthSignin() {
     const user = this.serverMockService.getUser(this.email);
-    this.webAuthnService.getAssertion(user).then((response) => {
+    this.webAuthnService.webAuthnSignin(user).then((response) => {
       // TODO: validate attestion
       alert('✅ Congrats! Authentication went fine!');
       console.log('SUCCESSFULLY GOT AN ASSERTION!', response);

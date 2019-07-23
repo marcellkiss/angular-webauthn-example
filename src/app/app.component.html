@@ -34,8 +34,10 @@
 </div>
 
 <h1>Admin</h1>
-<div class="user" *ngFor="let user of users">
-    <button mat-button (click)="removeUser(user.email)"><mat-icon inline>delete</mat-icon></button> {{ user.email }}
+<div class="user" *ngFor="let user of users" fxLayoutAlign="space-between center">
+  <div class="email">{{ user.email }}</div>
+  <button mat-button *ngIf="user.credentials.length" (click)="webAuthSignin()" color="primary"><mat-icon>fingerprint</mat-icon></button>
+  <button mat-button (click)="removeUser(user.email)" color="warn"><mat-icon inline>delete</mat-icon></button>
 </div>
 
 <div class="info">
