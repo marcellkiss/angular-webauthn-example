@@ -4,8 +4,8 @@
     Web Authentication
   </h1>
 </div>
-<div class="forms" fxLayout="row" fxLayoutAlign="space-between start">
-  <fieldset fxFlex="grow">
+<div class="forms" fxLayout="row wrap" fxLayoutAlign="space-between start">
+  <fieldset fxFlex="noshrink">
     <legend>Sign Up</legend>
     <div class="signup" fxLayout="column" fxLayoutAlign="center center">
       <mat-form-field>
@@ -17,7 +17,7 @@
       <button mat-raised-button color="primary" (click)="signup()">SIGN UP</button>
     </div>
   </fieldset>
-  <fieldset fxFlex="grow">
+  <fieldset fxFlex="noshrink">
     <legend>Sign In</legend>
     <div class="signin" fxLayout="column" fxLayoutAlign="center center">
       <mat-form-field>
