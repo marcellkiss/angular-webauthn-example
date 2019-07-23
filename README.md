@@ -4,7 +4,7 @@ Small showcase application, built with Angular, showing the capabilities of [Web
 
 ## Demo
 
-[https://marcellkiss.github.io/angular-webauthn-example/](https://marcellkiss.github.io/angular-webauthn-example/)
+🚀[https://marcellkiss.github.io/angular-webauthn-example/](https://marcellkiss.github.io/angular-webauthn-example/)
 
 **You can use your Fingerprint for authentication, right from the browser.**
 
