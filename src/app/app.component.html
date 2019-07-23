@@ -1,11 +1,23 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div>
+<div fxLayoutAlign="space-between center">
   <h1>
-    Web Authentication
+    🔐 Web Authentication example with Angular
   </h1>
+  <a mat-button class="github" href="https://github.com/marcellkiss/angular-webauthn-example" target="_blank">
+    <img height="32" width="32" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" />
+    GitHub
+  </a>
+  <!-- <div class="github" fxLayoutAlign="start center" matRipple>
+  </div> -->
 </div>
-<div class="forms" fxLayout="row wrap" fxLayoutAlign="space-between start">
-  <fieldset fxFlex="noshrink">
+<p>✅ 70% ✅ browser support! Check <a href="https://caniuse.com/#search=web%20authentication" target="_blank">caniuse.com</a> for more details.</p>
+<p>The WEB has never been closer to get rid of passwords in an ultimately secure way.</p>
+<br/>
+<mat-card class="not-available" *ngIf="!webAuthnAvailable">
+    🚫 Oops! Sorry, Web Authentication API is not available in your browser. Try it in Chrome.
+</mat-card>
+<div class="forms" fxLayout="row wrap" fxLayoutAlign="space-between start" fxLayoutGap="10px">
+  <mat-card fxFlex="noshrink">
     <legend>Sign Up</legend>
     <div class="signup" fxLayout="column" fxLayoutAlign="center center">
       <mat-form-field>
@@ -16,8 +28,8 @@
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="signup()">SIGN UP</button>
     </div>
-  </fieldset>
-  <fieldset fxFlex="noshrink">
+  </mat-card>
+  <mat-card fxFlex="noshrink">
     <legend>Sign In</legend>
     <div class="signin" fxLayout="column" fxLayoutAlign="center center">
       <mat-form-field>
@@ -27,18 +39,20 @@
         <input type="password" matInput placeholder="Password" [(ngModel)]="password">
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="signin()">SIGN IN</button>
-      <div class="or">OR</div>
-      <button mat-raised-button color="primary" (click)="webAuthSignin()"><mat-icon>fingerprint</mat-icon></button>
+      <div class="fingerprint-auth" *ngIf="webAuthnAvailable">
+        <div class="or" fxLayoutAlign="center start">OR</div>
+        <button mat-raised-button color="primary" (click)="webAuthSignin()"><mat-icon>fingerprint</mat-icon></button>
+      </div>
     </div>
-  </fieldset>
+  </mat-card>
 </div>
 
 <h1>Admin</h1>
-<div class="user" *ngFor="let user of users" fxLayoutAlign="space-between center">
+<mat-card class="user" *ngFor="let user of users" fxLayoutAlign="space-between center">
   <div class="email">{{ user.email }}</div>
   <button mat-button *ngIf="user.credentials.length" (click)="webAuthSignin()" color="primary"><mat-icon>fingerprint</mat-icon></button>
   <button mat-button (click)="removeUser(user.email)" color="warn"><mat-icon inline>delete</mat-icon></button>
-</div>
+</mat-card>
 
 <div class="info">
   <hr/>

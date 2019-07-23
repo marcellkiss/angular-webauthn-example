@@ -1,3 +1,14 @@
+.not-available {
+  margin-bottom: 10px;
+}
+
+.github {
+  margin: 3px 0;
+  img {
+    margin-top: -3px;
+  }
+}
+
 .signup, .signin {
   height: 300px;
 }
@@ -10,6 +21,12 @@
   margin: 8px 0;
 }
 
-.user:hover {
-  background-color: #eee;
+.user {
+  margin-bottom: 5px;
+  // padding: 5px;
+  // border-bottom: 1px solid lightgray;
 }
+
+// .user:hover {
+//   background-color: #eee;
+// }
