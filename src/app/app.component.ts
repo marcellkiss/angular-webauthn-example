@@ -13,6 +13,7 @@ export class AppComponent {
   users: User[];
   email = 'a@a.com';
   password = 'aaa';
+  useFingerprint = true;
   webAuthnAvailable = !!navigator.credentials && !!navigator.credentials.create;
   // signupForm: FormGroup;
 
@@ -44,7 +45,7 @@ export class AppComponent {
     this.users = this.serverMockService.getUsers();
 
     // Ask for WebAuthn Auth method
-    if (this.webAuthnAvailable &&  confirm('Would you like to use your fingerprint for later logins?')) {
+    if (this.webAuthnAvailable && this.useFingerprint) {
       this.webAuthnService.webAuthnSignup(user)
         .then((credential: PublicKeyCredential) => {
           console.log('credentials.create RESPONSE', credential);

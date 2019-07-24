@@ -26,6 +26,11 @@
       <mat-form-field>
         <input type="password" matInput placeholder="Password" [(ngModel)]="password">
       </mat-form-field>
+      <div class="fingerprint" *ngIf="webAuthnAvailable">
+        <mat-checkbox [(ngModel)]="useFingerprint" matTooltip="Use your fingerprint for future authentications"><mat-icon inline>fingerprint</mat-icon></mat-checkbox>
+        <br/>
+        <br/>
+      </div>
       <button mat-raised-button color="primary" (click)="signup()">SIGN UP</button>
     </div>
   </mat-card>
